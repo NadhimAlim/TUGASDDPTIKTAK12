@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+
+char papan[3][3] = {{'1', '2', '3'},
+                    {'4', '5', '6'},
+                    {'7', '8', '9'}};
+int playerone = 1;
+
+void permainan() {
+    cout << "Tic-Tac-Toe" << endl;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            cout << papan[i][j] << ' ';
+        }
+        cout << endl;
+    }
+}
+
+bool buat(int choice) {
+    if (choice < 1 || choice > 9) {
+        cout << "Program INVALID MASUKKAN LAGI NOMOR ! SAMPE 9" << endl;
+        return false;
+    }
+
+    int row = (choice - 1) / 3;
+    int col = (choice - 1) % 3;
+
+    if (papan[row][col] == 'X' || papan[row][col] == 'O') {
+        cout << "Ulangi lagi" << endl;
+        return false;
+    }
+
+    papan[row][col] = (playerone == 1) ? 'X' : 'O';
+    return true;
+}
+
+bool menang() {
+    for (int i = 0; i < 3; ++i) {
+        if ((papan[i][0] == papan[i][1] && papan[i][1] == papan[i][2]) ||
+            (papan[0][i] == papan[1][i] && papan[1][i] == papan[2][i])) {
+            return true;
+        }
+    }
+
+    if ((papan[0][0] == papan[1][1] && papan[1][1] == papan[2][2]) ||
+        (papan[0][2] == papan[1][1] && papan[1][1] == papan[2][0])) {
+        return true;
+    }
+
+    return false;
+}
+
+int main() {
+    int choice;
+
+    do {
+        permainan();
+
+        cout << "PEMAIN " << playerone << "Masukkan Nomor 1 - 9 :";
+        cin >> choice;
+
+        if (buat(choice) && menang()) {
+            permainan();
+            cout << "PEMAIN " << playerone << " MENANG" << endl;
+            break;
+        }
+
+        playerone = (playerone == 1) ? 2 : 1;
+    } while (true);
+
+    return 0;
+}
